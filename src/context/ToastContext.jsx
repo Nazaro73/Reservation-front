@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useState } from 'react';
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 
 const ToastContext = createContext(null);
 
@@ -20,11 +20,16 @@ export function ToastProvider({ children }) {
     [remove]
   );
 
-  const toast = {
-    success: (m) => push(m, 'success'),
-    error: (m) => push(m, 'error'),
-    info: (m) => push(m, 'info')
-  };
+  // Mémoïsé : référence stable entre les rendus, sinon les useEffect/useCallback
+  // des pages qui dépendent de `toast` se relancent à chaque toast -> boucle.
+  const toast = useMemo(
+    () => ({
+      success: (m) => push(m, 'success'),
+      error: (m) => push(m, 'error'),
+      info: (m) => push(m, 'info')
+    }),
+    [push]
+  );
 
   const styles = {
     success: 'bg-emerald-600',
