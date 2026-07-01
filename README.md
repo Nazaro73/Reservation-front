@@ -15,16 +15,22 @@ sur son site pour la réservation en ligne des clients.
 
 ```bash
 npm install
-cp .env.example .env   # puis renseigner VITE_API_URL
-npm run dev            # http://localhost:5173
+npm run dev            # http://localhost:5173 (utilise l'API locale)
 ```
 
 ### Variables d'environnement
-| Variable | Description | Exemple |
-|---|---|---|
-| `VITE_API_URL` | URL de base de l'API (avec `/api`) | `http://localhost:3000/api` |
+L'URL de l'API est lue dans `VITE_API_URL` (baked au build). Deux fichiers sont
+fournis et chargés automatiquement par Vite :
 
-> ⚠️ L'API doit autoriser l'origine du front via CORS (déjà activé côté API).
+| Fichier | Commande | Cible |
+|---|---|---|
+| `.env.development` | `npm run dev` | `http://localhost:3000/api` (API locale) |
+| `.env.production` | `npm run build` | `https://resa.abdel-rahim-khababa.com/api` (API en ligne) |
+
+Pour surcharger ponctuellement (ex: dev local pointé sur la prod), créer un
+`.env.local` avec `VITE_API_URL=...` (ignoré par git).
+
+> ⚠️ L'API doit autoriser l'origine du front via CORS (déjà activé côté API : `*`).
 
 ## Build & déploiement (statique)
 
